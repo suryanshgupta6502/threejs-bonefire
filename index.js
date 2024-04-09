@@ -2,6 +2,7 @@ import * as three from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import Stats from 'stats-js'
+import { gsap } from 'gsap'
 // import Stats from 'three/examples/jsm/libs/stats.module'
 // import Stats from 'three/examples/jsm/libs/'
 // console.log(Statss);
@@ -20,7 +21,9 @@ const sizes = {
 
 const camera = new three.PerspectiveCamera(75, sizes.width / sizes.heigth)
 scene.add(camera)
-camera.position.z = 5
+camera.position.z = 8
+camera.position.x = 1
+// camera.position.y=2
 
 const effect = {
     x: sizes.width / 100,
@@ -37,12 +40,15 @@ window.addEventListener("resize", () => {
 
     renderer.setSize(sizes.width, sizes.heigth)
 
-    effect.x= sizes.width / 100,
-        effect.y= sizes.heigth / 100
+    effect.x = sizes.width / 100
+    effect.y = sizes.heigth / 100
+    
 })
-
+// console.log(document);
 const orbitcontrol = new OrbitControls(camera, canvas)
-// scene.add(orbitcontrol)
+orbitcontrol.minPolarAngle = 1.6
+orbitcontrol.maxPolarAngle = 1.6
+scene.add(orbitcontrol)
 
 
 // const box = new three.Mesh(new three.TorusGeometry(), new three.MeshBasicMaterial({
@@ -92,7 +98,7 @@ modeloader.load("./forest.glb", (gltf) => {
     const model = gltf.scene
     // model.scale.set(.1, .1, .1)
     model.position.y = -2
-    model.position.z = -5
+    // model.position.z = -3
 
     // console.log(gltf.scene.children);
     console.log(model.material);
@@ -139,41 +145,70 @@ light.position.set(5, 1, -1)
 const ambient = new three.AmbientLight("white", 4)
 scene.add(ambient)
 
-const light1 = new three.PointLight("orange", 20, 2);
-light1.add(new three.Mesh(new three.SphereGeometry(0.1, 16, 8), new three.MeshBasicMaterial({ color: "yellow" })));
+const light1 = new three.PointLight("orange", 20, 1, 1);
+// light1.add(new three.Mesh(new three.SphereGeometry(0.1, 16, 8), new three.MeshBasicMaterial({ color: "orange",transparent:true })));
 scene.add(light1);
 
 let mouse = new three.Vector2()
 // mouse=mouse.normalize()
-
+console.log(orbitcontrol);
 
 window.addEventListener("mousemove", (e) => {
     // console.log(effect.x);
+    // e.preventDefault()
     mouse.x = (e.clientX / sizes.width - .5) * effect.x
     mouse.y = -(e.clientY / sizes.heigth - .5) * effect.y
-    // mouse.x=e.movementX
-    // mouse.y = e.movementY
-    // mouse.normalize()
-    // e.preventDefault();
-    // mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-    // mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-    // console.log(e.pageX,e.pageY);
-    // light1.position.set(e.pageX,e.pageY,0)
-    // console.log(mouse);
 
-    // light1.position.y=mouse.y
-    // console.log(e.x);
-    // console.log(e);
 
     const cursor = document.querySelector(".cursor")
     const cursor1 = document.querySelector(".cursor1")
-    // console.log(cursor.style)
-    cursor.style.top = e.clientY + "px"
-    cursor.style.left = e.clientX + "px"
+    const cursor2 = document.querySelector(".cursor2")
+    const cursor3 = document.querySelector(".cursor3")
 
-    cursor1.style.top = e.clientY + "px"
-    cursor1.style.left = e.clientX + 10 + "px"
+    // cursor.style.top = e.clientY + "px"
+    // cursor.style.left = e.clientX + "px"
+
+    gsap.to(cursor, {
+        top: `${e.clientY}px`,
+        left: `${e.clientX}px`,
+        duration: 0.3
+    })
+
+    gsap.to(cursor1, {
+        top: `${e.clientY}px`,
+        left: `${e.clientX}px`,
+        duration: 0.4
+    })
+
+    gsap.to(cursor2, {
+        top: `${e.clientY}px`,
+        left: `${e.clientX}px`,
+        duration: 0.5
+    })
+
+    gsap.to(cursor3, {
+        top: `${e.clientY}px`,
+        left: `${e.clientX}px`,
+        duration: 0.6,
+    })
+
 })
+
+const target = document.querySelector(".cursor")
+target.addEventListener('touchmove', function (event) {
+
+    event.preventDefault()
+    var touch = event.touches[0];
+    console.log(event.touches);
+    // Get the touch coordinates
+    var x = touch.clientX;
+    var y = touch.clientY;
+
+    // Move the element to the new coordinates
+    target.style.left = (x - 50) + 'px'; // Adjusting for half of target width
+    target.style.top = (y - 50) + 'px';  // Adjusting for half of target height
+});
+
 // console.log(stats.dom);
 
 // const lighthelper = new three.PointLightHelper(light)

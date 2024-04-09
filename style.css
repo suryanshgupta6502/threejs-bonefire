@@ -44,6 +44,11 @@ nav {
   justify-content: space-between;
   padding: 2%;
 
+
+}
+
+nav div {
+  cursor: pointer;
 }
 
 .logo h1 {
@@ -116,14 +121,94 @@ nav button {
   font-weight: 600;
 }
 
-/* .cursor,.cursor1{
-  background-color: aqua;
+.cursor,
+.cursor1,
+.cursor2,
+.cursor3 {
+  background-color: rgba(255, 166, 0, 0.7);
   width: 20px;
   height: 20px;
   position: absolute;
-  top: 0px;
-  left: 0px;
+  top: 50%;
+  left: 50%;
   border-radius: 50%;
-  transform: translate(-50%,-50%);
-  
-} */
+  transform: translate(-50%, -50%);
+  cursor: cell;
+  pointer-events: none;
+  /* touch-action: none; */
+}
+
+.cursor1 {
+  background-color: rgba(247, 165, 13, 0.6);
+}
+
+.cursor2 {
+  background-color: rgba(255, 166, 0, 0.5);
+}
+
+.cursor3 {
+  background-color: rgba(255, 166, 0, 0.4);
+}
+
+button{
+  cursor: pointer;
+}
+
+@media screen and (max-width:600px) {
+
+  body {
+    /* width: 100%; */
+    /* height: 100%; */
+  }
+
+  nav {
+    /* width: 100%; */
+  }
+
+  .navitem {
+    margin: 0;
+    /* font-size: 10px; */
+  }
+
+  .navitem ul {
+    display: flex;
+    list-style: none;
+    gap: 4vw;
+    font-size: 12px;
+    text-transform: capitalize;
+    margin: 2vw;
+    /* white-space: nowrap; */
+  }
+
+  .main {
+    width: 80%;
+  }
+
+  .main h1 {
+    text-align: center;
+    font-size: 35px;
+  }
+
+  .main span {
+    font-size: 40px;
+  }
+
+  .main button {
+    padding: 2vw 2vw;
+  }
+
+  .button button {
+    /* margin: 0; */
+    /* margin-right: 20px; */
+    font-size: 18px;
+    /* white-space: nowrap; */
+  }
+
+  .webgl {
+    /* min-width: 50px;
+    min-height: 50px; */
+    width: 100%;
+    height: 100%;
+  }
+
+}
