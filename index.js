@@ -3,6 +3,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import Stats from 'stats-js'
 import { gsap } from 'gsap'
+import axios from 'axios'
 // import Stats from 'three/examples/jsm/libs/stats.module'
 // import Stats from 'three/examples/jsm/libs/'
 // console.log(Statss);
@@ -42,13 +43,13 @@ window.addEventListener("resize", () => {
 
     effect.x = sizes.width / 100
     effect.y = sizes.heigth / 100
-    
+
 })
 // console.log(document);
 const orbitcontrol = new OrbitControls(camera, canvas)
 orbitcontrol.minPolarAngle = 1.6
 orbitcontrol.maxPolarAngle = 1.6
-scene.add(orbitcontrol)
+// scene.add(orbitcontrol)
 
 
 // const box = new three.Mesh(new three.TorusGeometry(), new three.MeshBasicMaterial({
@@ -74,8 +75,10 @@ const firematerial = new three.MeshStandardMaterial({ color: "orange" })
 // scene.add(light2);
 
 const modeloader = new GLTFLoader()
+let model;
+
 modeloader.load("./forest.glb", (gltf) => {
-    console.log("gltf", gltf.scene.children);
+    // console.log("gltf", gltf.scene.children);
     gltf.scene.traverse((child) => {
         // console.log(child);
         child.material = material
@@ -90,23 +93,23 @@ modeloader.load("./forest.glb", (gltf) => {
     const lamp6 = gltf.scene.children.find((child) => child.name === "lamp6");
     const fire = gltf.scene.children.find((child) => child.name === "fire");
     // console.log(lamp, lamp1, lamp2, lamp3, lamp4, lamp5, lamp6);
-    console.log(lamp);
+    // console.log(lamp);
     fire.material = firematerial
     lamp.material = lamp1.material = lamp2.material = lamp3.material = lamp4.material = lamp5.material = lamp6.material = lampmaterial
 
-    console.log(lamp);
-    const model = gltf.scene
+    // console.log(lamp);
+    // model.push(gltf.scene)
+    model = gltf.scene
     // model.scale.set(.1, .1, .1)
     model.position.y = -2
     // model.position.z = -3
 
     // console.log(gltf.scene.children);
-    console.log(model.material);
+    // console.log(model.material);
     scene.add(model)
 
     // console.log("lodede");
 })
-
 
 //fireflies
 // console.log(new three.BoxGeometry());
@@ -151,7 +154,6 @@ scene.add(light1);
 
 let mouse = new three.Vector2()
 // mouse=mouse.normalize()
-console.log(orbitcontrol);
 
 window.addEventListener("mousemove", (e) => {
     // console.log(effect.x);
@@ -199,7 +201,7 @@ target.addEventListener('touchmove', function (event) {
 
     event.preventDefault()
     var touch = event.touches[0];
-    console.log(event.touches);
+    // console.log(event.touches);
     // Get the touch coordinates
     var x = touch.clientX;
     var y = touch.clientY;
@@ -228,9 +230,42 @@ renderer.outputColorSpace = three.SRGBColorSpace
 // console.log(renderer.info)
 // document.querySelector(".data").textContent=(renderer.info.memory.geometries)
 
+
+
+const intialwebsite = document.referrer
+const usertimezone = Intl.DateTimeFormat().resolvedOptions().timeZone + " " + Intl.DateTimeFormat().resolvedOptions().locale
+var device = "";
+function isMobile() {
+    const regex = /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+    device = navigator.userAgent;
+    return regex.test(navigator.userAgent);
+}
+isMobile()
+console.log(device, intialwebsite, usertimezone);
+
+// axios.defaults.baseURL="http://localhost:3000/"
+// axios.defaults.baseURL = ""
+https://rich-cyan-chinchilla-wrap.cyclic.app/
+
+axios.defaults.baseURL = import.meta.env.VITE_AXIOSPOST
+
+axios.post("bonfire", { device, intialwebsite, usertimezone })
+    .then(function (response) {
+        console.log(response);
+    })
+    .catch(function (error) {
+        console.error("Error posting data:", error);
+    });
+
+
+
+
+
+
+
 const clock = new three.Clock()
 let previostime = 0
-console.log(flies.attributes.position.array.length);
+// console.log(flies.attributes.position.array.length);
 
 function tick() {
     stats.begin()
@@ -249,7 +284,10 @@ function tick() {
     // // console.log(val);
     //         Math.sin(elapsedTime)
     //     })
+    if (model) {
+        // model.rotation.y += -.0001
 
+    }
     // light1.position.x = Math.sin(elapsedTime * 0.7);
     // light1.position.y = Math.cos(elapsedTime * 0.5);
     // light1.position.z = Math.cos(elapsedTime * 0.3);
